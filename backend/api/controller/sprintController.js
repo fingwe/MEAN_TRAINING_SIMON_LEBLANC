@@ -14,9 +14,9 @@ function sprintController() {
         const { setTimer } = sprintRepository();
         console.log('controller saves a timer with the repo');
         const timer = {
-            name: req.params.name,
-            duration: req.params.durations,
-            status: req.params.status
+            name: req.body.name,
+            duration: req.body.durations,
+            status: req.body.status
         };
         const sprint = setTimer(timer);
     }

@@ -6,7 +6,8 @@ function sprintRepository() {
     const dbName = 'sprintApp';
     
 
-    function getTimers() {
+    function getTimers(_id) {
+
         
     }
 
