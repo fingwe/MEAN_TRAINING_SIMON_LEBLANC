@@ -39,15 +39,64 @@ function sprintRepository() {
             if (err) {
                 console.log(`pastSprintRepository.setTimer error: ${err}`);
             }
-
-            console.log(sprint);
             
             callback(null, sprint);
         });
     }
 
-    function getTimer(body, callback) {
+    function getTimer(params, callback) {
+        initiatetDatabase();
+        PastSprint.findById(params._id, (err, sprint) => {
+            if (err) {
+                console.log(`pastSprintRepository.getTimer error: ${err}`);
+            }
 
+            callback(null, sprint);
+        });
+
+    }
+
+    function updateTimer(request, callback) {
+        initiatetDatabase();
+        PastSprint.findById(request.params._id,(err,pastSprint) => {
+            if (err) {
+                console.log(err.stack);
+            }
+
+            const body = request.body;
+
+            pastSprint.name = body.name || pastSprint.name;
+            pastSprint.duration = body.duration || pastSprint.duration;
+            pastSprint.status = body.status || pastSprint.status;
+            pastSprint.progress = body.progress || pastSprint.progress;
+            pastSprint.description = body.description || pastSprint.description;
+            pastSprint.notify = body.notify || pastSprint.notify;
+            pastSprint.user = body.user || pastSprint.user;
+            pastSprint.createdAt = body.createdAt || pastSprint.createdAt;
+            pastSprint.startedAt = body.startedAt || pastSprint.startedAt;
+            pastSprint.finishedAt = body.finishedAt || pastSprint.finishedAt;
+
+            pastSprint.save((err, sprint) => {
+                if (err) {
+                    console.log(err.stack);
+                }
+
+                callback(null, sprint);
+            });
+            
+        });
+    }
+
+    function deleteTimer(_id, callback) {
+        initiatetDatabase();
+
+        PastSprint.findByIdAndRemove(_id,(err,data) => {
+            if (err) {
+                console.log(`pastSprintRepository.deleteTimer error: ${err}`);
+            }
+
+            callback(null, data);
+        });
     }
 
     // procedure to start mongoose database connection
@@ -65,7 +114,9 @@ function sprintRepository() {
 
     return {getTimers,
             setTimer,
-            getTimer};
+            getTimer,
+            updateTimer,
+            deleteTimer};
 }
 
 module.exports = sprintRepository;

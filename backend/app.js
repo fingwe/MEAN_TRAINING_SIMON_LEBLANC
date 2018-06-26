@@ -5,6 +5,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const apiRouter = require('./api/routes/apiRouter');
 const bodyParser = require('body-parser');
+const sessions = require('express-session');
+const openid = require('openid-connect');
 
 const app = express();
 
