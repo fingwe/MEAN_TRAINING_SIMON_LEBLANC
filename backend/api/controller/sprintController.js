@@ -2,27 +2,37 @@ const sprintRepository = require('../repository/sprintRepository');
 
 function sprintController() {
 
+    const { getTimers, setTimer } = sprintRepository();
+
     function getSprints(req, res) {
-
-        const { getTimers } = sprintRepository();
-        console.log('controller gets info from repo')
-        const sprints = getTimers();
-        res.send(sprints);
+        
+        console.log('getSprints');
+        getTimers((err, data) => {
+            if (err) {
+                console.log(err.stack);
+            } else {
+                console.log('sprintController.getSprints ok');
+                res.json(data.sprints);
+            }
+        });
     }
 
-    function setSprints(req, res) {
-        const { setTimer } = sprintRepository();
-        console.log('controller saves a timer with the repo');
-        const timer = {
-            name: req.body.name,
-            duration: req.body.durations,
-            status: req.body.status
-        };
-        const sprint = setTimer(timer);
+    function setSprint(req, res) {
+        
+        console.log('setSprints');
+        setTimer(req.body,(err, data) => {
+            if (err) {
+                console.log(err.stack);
+            } else {
+                console.log('sprintController.setSprint ok');
+                res.redirect('/api/sprints');
+            }
+        });
     }
-
+    
     return {
-        getSprints
+        getSprints,
+        setSprint
     };
 
 }

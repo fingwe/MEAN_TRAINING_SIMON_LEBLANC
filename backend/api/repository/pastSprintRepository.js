@@ -1,6 +1,6 @@
 const mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    Sprint = require('../models/sprint');
+    PastSprint = require('../models/pastSprint');
 
 
 function sprintRepository() {
@@ -8,9 +8,8 @@ function sprintRepository() {
     const url = 'mongodb://localhost:27017/sprintApp';
     
     function getTimers(callback) {
-
         initiatetDatabase();
-        Sprint.find({}, (err, sprints) => {
+        PastSprint.find({}, (err, sprints) => {
             if (err) {
                 console.log(`SprintRepository.getTimers error: ${err}`);
                 return callback(err);
@@ -23,22 +22,31 @@ function sprintRepository() {
 
     function setTimer(body, callback) {
         initiatetDatabase();
-        let sprint = new Sprint();
+        let pasSprint = new PastSprint();
         
-        sprint.name = body.name;
-        sprint.duration = body.duration;
-        sprint.status = body.status;
+        pasSprint.name = body.name;
+        pasSprint.duration = body.duration;
+        pasSprint.status = body.status;
+        pasSprint.progress = body.progress;
+        pasSprint.description = body.description;
+        pasSprint.notify = body.notify;
+        pasSprint.user = body.user;
+        pasSprint.createdAt = body.createdAt;
+        pasSprint.startedAt = body.startedAt;
+        pasSprint.finishedAt = body.finishedAt;
 
-        sprint.save((err, sprint) => {
+        pasSprint.save((err, sprint) => {
             if (err) {
-                console.log(`sprintRepository.setTimer error: ${err}`);
+                console.log(`pastSprintRepository.setTimer error: ${err}`);
             }
+
+            console.log(sprint);
             
             callback(null, sprint);
         });
     }
 
-    function getTimer(_id) {
+    function getTimer(body, callback) {
 
     }
 
