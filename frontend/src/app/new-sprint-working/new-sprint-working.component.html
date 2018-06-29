@@ -1,5 +1,39 @@
-<div class="progress">
-    <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%">{{progressPercent}}%</div>
-</div>
+<div class="container" (load)="importFinishDialog($event,completedSprint)">
+        <h2>Progress</h2>
+        <div class="progress">
+            <div id="progress-bar" class="progress-bar" role="progressbar" [ngStyle]="{'width':getProgress(progressPercent)}">{{progressPercent}}%</div>
+        </div>
+    
+        <p>Focus fully on your task</p>
+        
+          <div class = "row">
+            <button id="stopBtn" class="btn btn-success mx-auto" (click)="onStop($event,stopDialog)">Stop</button>
+          </div>
+    
+          <p>Logged in as stubemail@stubemail.com</p>
+    </div>
 
-  <button type="input" class="btn btn-success" ng-click="onClick()">Start</button>
+    <div *ngIf="onFinishedListenner()"></div>
+
+    <ng-template #stopDialog>
+        <div class="modal-header">
+          <h4 class="modal-title pull-left">On hold. Cancel sprint?</h4>
+        </div>
+        <div class="modal-body">
+            <button class="btn btn-danger" (click)="onAbort($event)">Yes</button>
+            <button class="btn btn-primary" (click)="onResume($event,stopDialog)">No</button>
+        </div>
+    </ng-template>
+    
+    <ng-template #completedSprint>
+            <div class="modal-header">
+              <h4 class="modal-title pull-left">On hold. Cancel sprint?</h4>
+              <button type="button" class="close pull-right" 
+                    aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <button class="btn btn-danger" (click)="onAbort($event)">Yes</button>
+                <button class="btn btn-primary" (click)="onResume($event,stopDialog)">No</button>
+            </div>
+    </ng-template>
