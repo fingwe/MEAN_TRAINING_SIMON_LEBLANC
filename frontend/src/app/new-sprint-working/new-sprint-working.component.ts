@@ -106,7 +106,6 @@ export class NewSprintWorkingComponent implements OnInit, OnChanges {
     this.runningSprint.user = this.asbsoluteSprint.user;
     this.runningSprint.createdAt = new Date();
     this.interval.isFinished = false;
-    console.log(this.runningSprint);
   }
 
   /**
@@ -132,26 +131,38 @@ export class NewSprintWorkingComponent implements OnInit, OnChanges {
   }
 
   /**
+   * format progressPercent depending of duration
+   */
+  formatProgressPercent() {
+    if (this.asbsoluteSprint.duration > 60000) {
+      this.progressPercent = this.progressPercent = parseFloat(this.progressPercent.toFixed(1));
+    } else {
+      this.progressPercent = parseFloat(Math.round((this.asbsoluteSprint.progress/this.asbsoluteSprint.duration)*100).toFixed(1));
+    }
+  }
+
+  /**
    * Manage the work of the timer
    */
   timerWork() {
     this.interval.runner = setInterval(()=>{
       this.interval.isRunning = true;
-      console.log(this.asbsoluteSprint.progress);
       let diff = Date.now()-(Date.parse(this.runningSprint.startedAt.toString())+this.runningSprint.progress);
       this.runningSprint.progress+=diff;
       this.asbsoluteSprint.progress+=diff;
       if (this.runningSprint.progress < this.runningSprint.duration) {
-        this.progressPercent = parseFloat(Math.round((this.asbsoluteSprint.progress/this.asbsoluteSprint.duration)*100).toFixed(1));
-        this.progresswidthStyle = {'width': `${this.progressPercent}%`};
+        //
+        this.progressPercent = (this.asbsoluteSprint.progress/this.asbsoluteSprint.duration)*100;
+        this.progresswidthStyle = {'width': `${this.progressPercent.toFixed(0)}%`};
+        this.formatProgressPercent();
       } else {
         this.runningSprint.progress = this.runningSprint.duration;
         this.progressPercent = 100;
-        this.progresswidthStyle = {'width': `${this.progressPercent}%`};
+        this.progresswidthStyle = {'width': `${this.progressPercent.toFixed(0)}%`};
         this.timerEnd();
       }
       
-    },500);
+    },1);
   };
 
   /**
@@ -194,7 +205,7 @@ export class NewSprintWorkingComponent implements OnInit, OnChanges {
     this.asbsoluteSprint.status = new Status('Aborted');
     this.interval.isFinished = true;
     this.onFinished();
-    //
+    document.getElementById('past_sprint_tab-link').click();
 
   }
 
@@ -208,9 +219,8 @@ export class NewSprintWorkingComponent implements OnInit, OnChanges {
     this.asbsoluteSprint.finishedAt = new Date();
     this.asbsoluteSprint.status = new Status('Finished');
     this.onFinished();
-    this.router.navigateByUrl('/sprints');
+    document.getElementById('past_sprint_tab-link').click();
   }
-
 
 
   /**

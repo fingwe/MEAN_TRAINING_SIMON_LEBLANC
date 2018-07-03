@@ -14,7 +14,14 @@
             </tr>
         </thead>
         <tbody>
-    
+            <tr *ngFor="let sprint of pastSprints">
+                <td>{{sprint.duration/1000}}s</td>
+                <td>{{sprint.status}}</td>
+                <td>{{sprint.createdAt.toLocaleString()}}</td>
+                <td>{{sprint.startedAt.toLocaleString()}}</td>
+                <td>{{sprint.finishedAt.toLocaleString()}}</td>
+                <td>{{sprint.description}}</td>
+            </tr>
         </tbody>
         </table>
     </div>

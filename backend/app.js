@@ -6,7 +6,7 @@ const logger = require('morgan');
 const apiRouter = require('./api/routes/apiRouter');
 const bodyParser = require('body-parser');
 const sessions = require('express-session');
-const rs = require('connect-redis')(sessions);
+//const rs = require('connect-redis')(sessions);
 const openid = require('openid-connect');
 
 const app = express();
@@ -21,11 +21,11 @@ app.use(cookieParser());
 
 app.use("/static", express.static("static"));
 
-app.use(sessions({
-  store: new rs({host: '1270.0.1', port: 6379}),
-  cookie: {httpOnly: true},
-  secret: 'TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gUGhhc2VsbHVzIGF0IGxhb3JlZXQgc2VtLiBOdWxsYSBjb25zZWN0ZXR1ciBzZW1wZXIgbGFjdXMsIG5lYyBhbGlxdWFtIGVyYXQgcGVsbGVudGVzcXVlIGV0LiBWZXN0aWJ1bHVtIGV0IGF1Z3VlIHNvbGxpY2l0dWRpbiBsZW8gZWxlaWZlbmQgYmliZW5kdW0gZWdldCBpbiBlc3QuIFNlZCBhYyBxdWFtIGJsYW5kaXQsIG1vbGVzdGllIHZvbHV0cGF0Lg=='
-}));
+//app.use(sessions({
+ // store: new rs({host: '1270.0.1', port: 6379}),
+ // cookie: {httpOnly: true},
+ // secret: 'TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gUGhhc2VsbHVzIGF0IGxhb3JlZXQgc2VtLiBOdWxsYSBjb25zZWN0ZXR1ciBzZW1wZXIgbGFjdXMsIG5lYyBhbGlxdWFtIGVyYXQgcGVsbGVudGVzcXVlIGV0LiBWZXN0aWJ1bHVtIGV0IGF1Z3VlIHNvbGxpY2l0dWRpbiBsZW8gZWxlaWZlbmQgYmliZW5kdW0gZWdldCBpbiBlc3QuIFNlZCBhYyBxdWFtIGJsYW5kaXQsIG1vbGVzdGllIHZvbHV0cGF0Lg=='
+//}));
 
 
 // Router declaration
