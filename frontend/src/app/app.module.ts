@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -14,7 +15,6 @@ import { SprintsComponent } from './sprints/sprints.component';
 import { HomeComponent } from './home/home.component';
 import { TabviewComponent } from './tabview/tabview.component';
 import { PastSprintsComponent } from './past-sprints/past-sprints.component';
-import { NewSprintsComponent } from './new-sprints/new-sprints.component';
 import { NewSprintCardComponent } from './new-sprint-card/new-sprint-card.component';
 import { NewSprintWorkingComponent } from './new-sprint-working/new-sprint-working.component';
 import { NewSprintEndModalComponent } from './new-sprint-end-modal/new-sprint-end-modal.component';
@@ -29,7 +29,6 @@ import { NewSprintEndModalComponent } from './new-sprint-end-modal/new-sprint-en
     HomeComponent,
     TabviewComponent,
     PastSprintsComponent,
-    NewSprintsComponent,
     NewSprintCardComponent,
     NewSprintWorkingComponent,
     NewSprintEndModalComponent
@@ -40,6 +39,7 @@ import { NewSprintEndModalComponent } from './new-sprint-end-modal/new-sprint-en
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
     TabsModule.forRoot(),
+    FormsModule,
     AppRoutingModule
   ],
   providers: [],

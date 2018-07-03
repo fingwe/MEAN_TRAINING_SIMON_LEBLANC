@@ -11,6 +11,12 @@ import { SprintType } from '../../models/SprintType';
 })
 export class NewSprintCardComponent implements OnInit {
 
+  notSelected: boolean;
+
+  empty: boolean;
+
+  notReady: boolean;
+
   title = "New Sprint!";
 
   sprint: PastSprint;
@@ -21,10 +27,61 @@ export class NewSprintCardComponent implements OnInit {
 
   type: SprintType;
 
+  description: string;
+
+  timerIsRequested: boolean;
+
+  onClickStart(event) {
+    this.sprint.name = this.selectedSprintType.name;
+    this.sprint.duration = this.selectedSprintType.duration;
+    this.sprint.description = this.description;
+    this.timerIsRequested = true;
+  }
+
+  /**
+   * Method for managing event of select box
+   * must select value
+   * @param event 
+   */
+  setSelectedValue(event) {
+    this.notSelected = false;
+    this.validateButtonActivationConditions();
+  }
+
+  /**
+   * Method for checking if textarea is not empty
+   * @param event 
+   */
+  checkDescriptionText(event) {
+    if ( this.description != "" ) {
+      this.empty = false;
+    } else {
+      this.empty = true;
+    }
+    this.validateButtonActivationConditions();
+  }
+
+  /**
+   * Method for validating if form is ready
+   */
+  validateButtonActivationConditions()
+  {
+    if (!this.notSelected && !this.empty) {
+      this.notReady = false;
+    } else {
+      this.notReady = true;
+    }
+  }
+
   constructor() {
     this.sprintTypes = new SprintTypeData().getData();
     this.sprint = new PastSprint();
-    this.selectedSprintType = new SprintType(this.sprintTypes[0].name,this.sprintTypes[0].duration);
+    this.description = "";
+    this.selectedSprintType = new SprintType(this.sprintTypes[3].name,this.sprintTypes[3].duration);
+    this.timerIsRequested = false;
+    this.notSelected = true;
+    this.empty = true;
+    this.notReady = true;
   }
 
   ngOnInit() {

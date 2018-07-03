@@ -1,10 +1,11 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { PastSprint } from '../../models/PastSprint';
 import { Status } from '../../models/Status';
 import { Interval } from '../../models/Interval';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { ViewChild } from '@angular/core';
 
 
 @Component({
@@ -12,60 +13,83 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
   templateUrl: './new-sprint-working.component.html',
   styleUrls: ['./new-sprint-working.component.css']
 })
-export class NewSprintWorkingComponent implements OnInit {
+export class NewSprintWorkingComponent implements OnInit, OnChanges {
+
+  @ViewChild('completedSprint') completedSprint : TemplateRef<any>;
 
   modalRef: BsModalRef;
+
+  progresswidthStyle: any;
 
   progressPercent: number;
 
   interval: Interval;
 
-  finishedTemplate: TemplateRef<any>;
+  runningSprint: PastSprint;
 
-  sprint: PastSprint;
+  asbsoluteSprint: PastSprint;
+
+  @Input() injectedSprint: PastSprint;
+
+  timerStopTimeStamp: number;
 
   /**
-   * Method that listen to a click event and start a timer
-   * each seconds, adds one second to sprint.progess 
-   * and
-   * update progressPercent to the right percentage of progress
-   * 
-   * @param event the click event
+   * Event method that handle the injection of the sprint from parent module
+   * @param changes 
    */
-  onClickStart(event) {
-    this.timerStart();
+  ngOnChanges(changes: SimpleChanges) {
+    for (let propName in changes) {
+      let chng = changes[propName];
+      let cur  = JSON.stringify(chng.currentValue);
+      let prev = JSON.stringify(chng.previousValue);
+      if (propName === "injectedSprint") {
+        this.injectedSprint = chng.currentValue;
+        this.absoluteSprintInit();
+        this.runningSprintInit();
+        this.progresswidthStyle = {'width': `${this.progressPercent}%`};
+        this.timerStart();
+      }
+    }
   }
 
+  /**
+   * Method that hanlde the stoping event actions
+   * @param event 
+   * @param stopDialog 
+   */
   onStop(event,stopDialog: TemplateRef<any>) {
     this.timerStop();
     this.modalRef = this.modalService.show(stopDialog);
   }
 
+  /**
+   * Method that handle the resuming event actions
+   * @param event 
+   */
   onResume(event) {
     this.modalService.hide(1);
     this.timerRestart();
   }
 
+  /**
+   * Method that handle the abort event actions
+   * @param event 
+   */
   onAbort(event) {
-    this.modalService.hide(1)
-    this.timerAbort();
-    this.interval.isFinished = true;
+    this.modalService.hide(1);
+    setTimeout(() => {
+      this.timerAbort();
+      this.interval.isFinished = true;
+    },750);
+
   }
 
-  onFinishedListenner() {
-    if (this.interval.isFinished) {
-      this.onFinished();
-    }
-   return this.interval.isFinished;
-  }
-
-  importFinishDialog(event,finished: TemplateRef<any>) {
-    this.finishedTemplate = finished;
-  }
-
+  /**
+   * Method that manage the onFinished event
+   */
   onFinished() {
 
-    //this.modalRef = this.modalService.show(this.finishedTemplate);
+    this.modalRef = this.modalService.show(this.completedSprint);
   }
 
   /**
@@ -74,18 +98,36 @@ export class NewSprintWorkingComponent implements OnInit {
    * 
    * @param sprint a sprint object 
    */
-  timerInit(sprint?: PastSprint) {
-    this.sprint = new PastSprint();
-    this.sprint.name = "mySprint";  
-    this.sprint.duration = 3000;
-    this.sprint.status = new Status("initial");
+  runningSprintInit(sprint?: PastSprint) {
+    this.runningSprint = new PastSprint();
+    this.runningSprint.duration = this.asbsoluteSprint.duration - this.asbsoluteSprint.progress;
+    this.runningSprint.progress = 0;
+    this.runningSprint.notify = false;
+    this.runningSprint.user = this.asbsoluteSprint.user;
+    this.runningSprint.createdAt = new Date();
+    this.interval.isFinished = false;
+    console.log(this.runningSprint);
+  }
 
-    this.sprint.progress = 0;
-    this.sprint.description = "a simple timer";
-    this.sprint.notify = false;
-    this.sprint.user = 555;
+  /**
+   * 
+   * initialize the timer object
+   * 
+   * @param sprint a sprint object 
+   */
+  absoluteSprintInit() {
+    this.asbsoluteSprint = new PastSprint();
+    this.asbsoluteSprint.name = this.injectedSprint.name || "mySprint";  
+    this.asbsoluteSprint.duration = this.injectedSprint.duration || 5000;
+    this.asbsoluteSprint.status = new Status("initial");
+
+    this.asbsoluteSprint.progress = 0;
+    this.asbsoluteSprint.description = this.injectedSprint.description || "default sprint";
+    this.asbsoluteSprint.notify = false;
+    this.asbsoluteSprint.user = 555;
+    this.asbsoluteSprint.createdAt = new Date();
+
     this.progressPercent = 0;
-    this.sprint.createdAt = new Date();
     this.interval.isFinished = false;
   }
 
@@ -95,16 +137,21 @@ export class NewSprintWorkingComponent implements OnInit {
   timerWork() {
     this.interval.runner = setInterval(()=>{
       this.interval.isRunning = true;
-      let diff = Date.now()-(Date.parse(this.sprint.startedAt.toString())+this.sprint.progress);
-      this.sprint.progress+=diff;
-      if (this.sprint.progress < this.sprint.duration) {
-        this.progressPercent = parseFloat(Math.round((this.sprint.progress/this.sprint.duration)*100).toFixed(1));
+      console.log(this.asbsoluteSprint.progress);
+      let diff = Date.now()-(Date.parse(this.runningSprint.startedAt.toString())+this.runningSprint.progress);
+      this.runningSprint.progress+=diff;
+      this.asbsoluteSprint.progress+=diff;
+      if (this.runningSprint.progress < this.runningSprint.duration) {
+        this.progressPercent = parseFloat(Math.round((this.asbsoluteSprint.progress/this.asbsoluteSprint.duration)*100).toFixed(1));
+        this.progresswidthStyle = {'width': `${this.progressPercent}%`};
       } else {
-        this.sprint.progress = this.sprint.duration;
+        this.runningSprint.progress = this.runningSprint.duration;
         this.progressPercent = 100;
+        this.progresswidthStyle = {'width': `${this.progressPercent}%`};
         this.timerEnd();
       }
-    },1);
+      
+    },500);
   };
 
   /**
@@ -112,12 +159,8 @@ export class NewSprintWorkingComponent implements OnInit {
    */
   timerStart() {
     
-    if (this.interval.isRunning) {
-      this.timerEnd();
-      this.timerInit();
-    }
-    this.sprint.startedAt = new Date();
-    this.sprint.finishedAt = new Date(Date.parse(this.sprint.startedAt.toString())+this.sprint.duration);
+    this.asbsoluteSprint.startedAt = new Date();
+    this.runningSprint.startedAt = this.asbsoluteSprint.startedAt;
     this.timerWork();
   }
 
@@ -135,6 +178,8 @@ export class NewSprintWorkingComponent implements OnInit {
    */
   timerRestart() {
     if (!this.interval.isRunning) {
+      this.runningSprintInit();
+      this.runningSprint.startedAt = new Date();
       this.timerWork();
     }
   }
@@ -145,9 +190,11 @@ export class NewSprintWorkingComponent implements OnInit {
   timerAbort() {
     clearInterval(this.interval.runner);
     this.interval.isRunning = false;
-    this.sprint.finishedAt = new Date();
+    this.asbsoluteSprint.finishedAt = new Date();
+    this.asbsoluteSprint.status = new Status('Aborted');
     this.interval.isFinished = true;
-    this.router.navigateByUrl('/sprints');
+    this.onFinished();
+    //
 
   }
 
@@ -158,14 +205,13 @@ export class NewSprintWorkingComponent implements OnInit {
     clearInterval(this.interval.runner);
     this.interval.isRunning = false;
     this.interval.isFinished = true;
+    this.asbsoluteSprint.finishedAt = new Date();
+    this.asbsoluteSprint.status = new Status('Finished');
+    this.onFinished();
+    this.router.navigateByUrl('/sprints');
   }
 
-  /**
-   * Method that returns a formated progress for styling the progess bar progress
-   */
-  getProgress() {
-    return `${this.progressPercent}rem`;
-  }
+
 
   /**
    * Constructor method
@@ -174,8 +220,7 @@ export class NewSprintWorkingComponent implements OnInit {
   constructor(private modalService: BsModalService, private router: Router) {
     this.interval = new Interval();
     this.interval.isRunning = false;
-    this.timerInit();
-    this.timerStart();
+    
 
   }
 

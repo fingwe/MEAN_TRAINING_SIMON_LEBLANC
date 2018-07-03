@@ -12,9 +12,9 @@ export class SprintType {
 
     private initializeDuration(duration: number) {
         if (duration < 1000) {
-            this.duration = 1;
+            this.duration = 1000;
         } else if (duration === 0) {
-            this.duration = 1;
+            this.duration = 1000;
         } else {
             this.duration = duration;
         }
