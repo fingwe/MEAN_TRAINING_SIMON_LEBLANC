@@ -27,6 +27,15 @@ app.use("/static", express.static("static"));
  // secret: 'TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4gUGhhc2VsbHVzIGF0IGxhb3JlZXQgc2VtLiBOdWxsYSBjb25zZWN0ZXR1ciBzZW1wZXIgbGFjdXMsIG5lYyBhbGlxdWFtIGVyYXQgcGVsbGVudGVzcXVlIGV0LiBWZXN0aWJ1bHVtIGV0IGF1Z3VlIHNvbGxpY2l0dWRpbiBsZW8gZWxlaWZlbmQgYmliZW5kdW0gZWdldCBpbiBlc3QuIFNlZCBhYyBxdWFtIGJsYW5kaXQsIG1vbGVzdGllIHZvbHV0cGF0Lg=='
 //}));
 
+/**
+ * MiddleWare that enable cross origin requests
+ */
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', "*");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 // Router declaration
 app.use('/api', apiRouter);

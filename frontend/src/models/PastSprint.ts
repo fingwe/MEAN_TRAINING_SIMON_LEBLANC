@@ -5,7 +5,7 @@ export class PastSprint implements SprintTemplate {
     
     name: string;    
     duration: number;
-    status: Status;
+    status: string;
 
     progress: number;
     description: string;

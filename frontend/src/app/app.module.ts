@@ -5,6 +5,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -17,7 +18,6 @@ import { TabviewComponent } from './tabview/tabview.component';
 import { PastSprintsComponent } from './past-sprints/past-sprints.component';
 import { NewSprintCardComponent } from './new-sprint-card/new-sprint-card.component';
 import { NewSprintWorkingComponent } from './new-sprint-working/new-sprint-working.component';
-import { NewSprintEndModalComponent } from './new-sprint-end-modal/new-sprint-end-modal.component';
 
 @NgModule({
   declarations: [
@@ -30,8 +30,7 @@ import { NewSprintEndModalComponent } from './new-sprint-end-modal/new-sprint-en
     TabviewComponent,
     PastSprintsComponent,
     NewSprintCardComponent,
-    NewSprintWorkingComponent,
-    NewSprintEndModalComponent
+    NewSprintWorkingComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +39,8 @@ import { NewSprintEndModalComponent } from './new-sprint-end-modal/new-sprint-en
     ModalModule.forRoot(),
     TabsModule.forRoot(),
     FormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

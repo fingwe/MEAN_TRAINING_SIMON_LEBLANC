@@ -2,7 +2,7 @@ const pastSprintRepository = require('../repository/pastSprintRepository');
 
 function pastSprintController() {
 
-    const { getTimers, setTimer, getTimer, updateTimer , deleteTimer } = pastSprintRepository();
+    const { getTimers, setTimer, getTimer, updateTimer , deleteTimer, deleteTimers } = pastSprintRepository();
 
     function getPastSprints(req, res) {
         
@@ -61,12 +61,20 @@ function pastSprintController() {
         });
     }
 
+    function deletePastSprints(req, res) {
+        console.log('deletePastSprints');
+        deleteTimers((err, data) => {
+            res.send("Delete Successful");
+        });
+    }
+
     return {
         getPastSprints,
         setPastSprint,
         getPastSprint,
         putPastSprint,
-        deletePastSprint
+        deletePastSprint,
+        deletePastSprints
     };
 
 }

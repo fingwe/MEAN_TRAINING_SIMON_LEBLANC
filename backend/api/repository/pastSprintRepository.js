@@ -99,6 +99,18 @@ function sprintRepository() {
         });
     }
 
+    function deleteTimers(callback) {
+        initiatetDatabase();
+
+        PastSprint.remove({},(err, data) => {
+            if (err) {
+                console.log(`pastSprintRepository.deleteTimers error: ${err}`);
+            }
+
+            callback(null, null);
+        }).exec();
+    }
+
     // procedure to start mongoose database connection
     function initiatetDatabase() {
         mongoose.connect(url);
@@ -116,7 +128,8 @@ function sprintRepository() {
             setTimer,
             getTimer,
             updateTimer,
-            deleteTimer};
+            deleteTimer,
+            deleteTimers};
 }
 
 module.exports = sprintRepository;

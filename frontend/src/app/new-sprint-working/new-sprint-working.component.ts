@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, TemplateRef, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { PastSprint } from '../../models/PastSprint';
 import { Status } from '../../models/Status';
@@ -6,6 +6,7 @@ import { Interval } from '../../models/Interval';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { ViewChild } from '@angular/core';
+import { SprintService } from '../sprint.service';
 
 
 @Component({
@@ -33,6 +34,8 @@ export class NewSprintWorkingComponent implements OnInit, OnChanges {
 
   timerStopTimeStamp: number;
 
+  @Output() initRequestEvent = new EventEmitter<boolean>();
+
   /**
    * Event method that handle the injection of the sprint from parent module
    * @param changes 
@@ -50,6 +53,20 @@ export class NewSprintWorkingComponent implements OnInit, OnChanges {
         this.timerStart();
       }
     }
+  }
+
+  /**
+   * Send event request to parent for reseting page
+   */
+  sendInitRequest() {
+    this.initRequestEvent.emit(true);
+  }
+
+  /**
+   * Method that saves in the database the sprints
+   */
+  saveSprint(): void{
+    this.sprintService.addSprint(this.asbsoluteSprint).subscribe();
   }
 
   /**
@@ -118,7 +135,7 @@ export class NewSprintWorkingComponent implements OnInit, OnChanges {
     this.asbsoluteSprint = new PastSprint();
     this.asbsoluteSprint.name = this.injectedSprint.name || "mySprint";  
     this.asbsoluteSprint.duration = this.injectedSprint.duration || 5000;
-    this.asbsoluteSprint.status = new Status("initial");
+    this.asbsoluteSprint.status = new Status("initial").getType();
 
     this.asbsoluteSprint.progress = 0;
     this.asbsoluteSprint.description = this.injectedSprint.description || "default sprint";
@@ -202,9 +219,11 @@ export class NewSprintWorkingComponent implements OnInit, OnChanges {
     clearInterval(this.interval.runner);
     this.interval.isRunning = false;
     this.asbsoluteSprint.finishedAt = new Date();
-    this.asbsoluteSprint.status = new Status('Aborted');
+    this.asbsoluteSprint.status = new Status(`Cancelled (at ${this.progressPercent}%)`).getType();
     this.interval.isFinished = true;
+    this.saveSprint();
     this.onFinished();
+    this.sendInitRequest();
     document.getElementById('past_sprint_tab-link').click();
 
   }
@@ -217,8 +236,10 @@ export class NewSprintWorkingComponent implements OnInit, OnChanges {
     this.interval.isRunning = false;
     this.interval.isFinished = true;
     this.asbsoluteSprint.finishedAt = new Date();
-    this.asbsoluteSprint.status = new Status('Finished');
+    this.asbsoluteSprint.status = new Status('Completed').getType();
+    this.saveSprint();
     this.onFinished();
+    this.sendInitRequest();
     document.getElementById('past_sprint_tab-link').click();
   }
 
@@ -227,7 +248,7 @@ export class NewSprintWorkingComponent implements OnInit, OnChanges {
    * Constructor method
    * set the inital stub sprint for now
    */
-  constructor(private modalService: BsModalService, private router: Router) {
+  constructor(private modalService: BsModalService, private router: Router, private sprintService: SprintService) {
     this.interval = new Interval();
     this.interval.isRunning = false;
     

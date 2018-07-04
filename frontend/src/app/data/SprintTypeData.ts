@@ -19,5 +19,19 @@ export class SprintTypeData{
         return this.sprintTypes;
     }
 
-
+    /**
+     * Find a sprint data by time
+     */
+    findSprintByTime(time: number) {
+        for (let i = 0; i< this.sprintTypes.length; i++) {
+            if (time === this.sprintTypes[i].duration) {
+                if (this.sprintTypes[i].duration < 60000 ) {
+                    return `${this.sprintTypes[i].name} (${Math.floor(this.sprintTypes[i].duration/1000)}s)`
+                } else {
+                    return `${this.sprintTypes[i].name} (${Math.floor(this.sprintTypes[i].duration/60000)}min)`
+                }
+                
+            }
+        }
+    }
 }

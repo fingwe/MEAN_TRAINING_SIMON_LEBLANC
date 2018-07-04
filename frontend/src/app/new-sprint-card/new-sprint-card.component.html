@@ -24,4 +24,4 @@
         </div>
       </div>
 </div>
-<app-new-sprint-working *ngIf="timerIsRequested" [injectedSprint]="sprint"></app-new-sprint-working>
+<app-new-sprint-working *ngIf="timerIsRequested" [injectedSprint]="sprint" (initRequestEvent)="initRequest($event)"></app-new-sprint-working>

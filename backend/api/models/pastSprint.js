@@ -4,16 +4,16 @@ const Schema = mongoose.Schema;
 
 const PastSprintSchema = new Schema({
     
-    name        : { type : String, required: true, trim: true},
-    duration    : { type : Number, required: true },
-    status      : { type : String, required: true, trim: true },
-    progress    : { type : Number, required: true},
-    description : { type : String, required: true, trim: true},
-    notify      : { type : Boolean, required: true},
-    user        : { type : Number, required: true},
-    createdAt   : { type : Date, required: true},
-    startedAt   : { type : Date, required: true},
-    finishedAt   : { type : Date, required: true},
+    name        : { type : String, trim: true},
+    duration    : { type : Number },
+    status      : { type : String, trim: true },
+    progress    : { type : Number},
+    description : { type : String, trim: true},
+    notify      : { type : Boolean},
+    user        : { type : Number},
+    createdAt   : { type : Date},
+    startedAt   : { type : Date},
+    finishedAt   : { type : Date},
 
 });
 

@@ -31,6 +31,24 @@ export class NewSprintCardComponent implements OnInit {
 
   timerIsRequested: boolean;
 
+  initRequest($event) {
+    this.init();
+  }
+
+  /**
+   * Method to initialize the page data
+   */
+  init() {
+    this.sprintTypes = new SprintTypeData().getData();
+    this.sprint = new PastSprint();
+    this.description = "";
+    this.selectedSprintType = new SprintType(this.sprintTypes[3].name,this.sprintTypes[3].duration);
+    this.timerIsRequested = false;
+    this.notSelected = true;
+    this.empty = true;
+    this.notReady = true;
+  }
+
   onClickStart(event) {
     this.sprint.name = this.selectedSprintType.name;
     this.sprint.duration = this.selectedSprintType.duration;
@@ -74,14 +92,7 @@ export class NewSprintCardComponent implements OnInit {
   }
 
   constructor() {
-    this.sprintTypes = new SprintTypeData().getData();
-    this.sprint = new PastSprint();
-    this.description = "";
-    this.selectedSprintType = new SprintType(this.sprintTypes[3].name,this.sprintTypes[3].duration);
-    this.timerIsRequested = false;
-    this.notSelected = true;
-    this.empty = true;
-    this.notReady = true;
+    this.init();
   }
 
   ngOnInit() {

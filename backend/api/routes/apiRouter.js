@@ -5,7 +5,7 @@ const pastSprintContoller = require('../controller/pastSprintController');
 const apiRouter = express.Router();
 
 const { getSprints, setSprint } = sprintContoller();
-const { getPastSprints, setPastSprint, getPastSprint, putPastSprint, deletePastSprint } = pastSprintContoller();
+const { getPastSprints, setPastSprint, getPastSprint, putPastSprint, deletePastSprint, deletePastSprints } = pastSprintContoller();
 
 apiRouter.get('/sprints', getSprints);
 
@@ -14,6 +14,8 @@ apiRouter.post('/sprints', setSprint);
 apiRouter.get('/pastsprints', getPastSprints);
 
 apiRouter.post('/pastsprints', setPastSprint);
+
+apiRouter.delete('/pastsprints', deletePastSprints);
 
 apiRouter.get('/pastsprints/:_id', getPastSprint);
 
