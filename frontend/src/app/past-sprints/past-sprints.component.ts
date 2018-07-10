@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter } from '@angular/core';
 import { PastSprint } from '../../models/PastSprint';
 import { SprintService } from '../sprint.service';
-import { SprintType } from '../../models/SprintType';
 import { SprintTypeData } from '../data/SprintTypeData';
 
 @Component({
@@ -11,9 +10,13 @@ import { SprintTypeData } from '../data/SprintTypeData';
 })
 export class PastSprintsComponent implements OnInit {
 
+  @Input() pastSprintSelected: boolean;
+
   pastSprints: PastSprint[];
 
   sprintTypes: SprintTypeData;
+
+  sterm: String;
 
   getSprints(): void {
     this.sprintService.getSprints().subscribe(sprints => this.pastSprints = sprints);
@@ -27,15 +30,34 @@ export class PastSprintsComponent implements OnInit {
     this.deleteSprints();
   }
 
+  onKeyUpSearch($event) {
+    if (  1 < this.sterm.length &&  this.sterm.length < 10 ) {
+      this.searchSprints();
+    } else {
+      this.getSprints();
+    }
+  }
+
+  searchSprints(): void {
+    if (this.sterm == '' ) {
+      this.getSprints();
+    } else {
+      this.sprintService.searchSprints(this.sterm).subscribe(sprints => this.pastSprints = sprints);
+    }
+  }
+
   constructor(private sprintService: SprintService) {
     this.sprintTypes = new SprintTypeData();
-    setInterval(() => {
-      this.getSprints();
-    },500);
   }
 
   ngOnInit() {
     this.getSprints();
+    setInterval(()=>{
+      if (this.pastSprintSelected) {
+        this.getSprints();
+        this.pastSprintSelected = false;
+      }
+    },25);
   }
 
 }

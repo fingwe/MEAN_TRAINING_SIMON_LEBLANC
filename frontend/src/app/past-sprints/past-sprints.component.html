@@ -1,5 +1,5 @@
-<div class="container-fluid">
-    <input class="form-control" type="text" placeholder="filter">
+<div  class="container-fluid">
+    <input (keyup)="onKeyUpSearch($event)" [(ngModel)]="sterm" class="form-control" type="text" placeholder="filter">
 
     <div class="table-responsive">
         <table class="table table-striped">

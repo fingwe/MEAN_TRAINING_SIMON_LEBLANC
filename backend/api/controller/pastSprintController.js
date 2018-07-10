@@ -2,7 +2,7 @@ const pastSprintRepository = require('../repository/pastSprintRepository');
 
 function pastSprintController() {
 
-    const { getTimers, setTimer, getTimer, updateTimer , deleteTimer, deleteTimers } = pastSprintRepository();
+    const { getTimers, setTimer, getTimer, updateTimer , deleteTimer, deleteTimers, searchTimers } = pastSprintRepository();
 
     function getPastSprints(req, res) {
         
@@ -68,13 +68,21 @@ function pastSprintController() {
         });
     }
 
+    function searchPastSprints(req, res) {
+        console.log('searchPastSprints');
+        searchTimers(req.params.sterm,(err, data) => {
+            res.json(data);
+        });
+    }
+
     return {
         getPastSprints,
         setPastSprint,
         getPastSprint,
         putPastSprint,
         deletePastSprint,
-        deletePastSprints
+        deletePastSprints,
+        searchPastSprints
     };
 
 }

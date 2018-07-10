@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-tabview',
@@ -6,6 +6,15 @@ import { Component, OnInit} from '@angular/core';
   styleUrls: ['./tabview.component.css']
 })
 export class TabviewComponent implements OnInit {
+
+  mainTabIsSelected: boolean
+
+  onSelect( $event ): void {
+    this.mainTabIsSelected = true;
+    setTimeout(()=>{
+      this.mainTabIsSelected = false;
+    },100);
+  }
 
   constructor() { 
   }

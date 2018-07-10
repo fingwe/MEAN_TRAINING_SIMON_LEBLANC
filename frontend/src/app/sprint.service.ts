@@ -36,6 +36,14 @@ export class SprintService {
     );
   }
 
+  searchSprints(sterm: String): Observable<PastSprint[]> {
+    return this.http.get<PastSprint[]>(`${this.sprintApiUrl}/search/${sterm}`)
+      .pipe(
+        tap(sprints => this.log(`searched sprints`)),
+        catchError(this.handleError('getSprints', []))
+      );
+  }
+
   /**
    * Angular tutorial handle error method
    * Handle Http operation that failed.
