@@ -111,6 +111,10 @@ function sprintRepository() {
         }).exec();
     }
 
+    function searchTimers(callback) {
+        
+    }
+
     // procedure to start mongoose database connection
     function initiatetDatabase() {
         mongoose.connect(url);
@@ -129,7 +133,8 @@ function sprintRepository() {
             getTimer,
             updateTimer,
             deleteTimer,
-            deleteTimers};
+            deleteTimers,
+            searchTimers};
 }
 
 module.exports = sprintRepository;
