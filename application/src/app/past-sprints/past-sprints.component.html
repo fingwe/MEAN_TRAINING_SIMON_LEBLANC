@@ -1,0 +1,31 @@
+<div  class="container-fluid">
+    <input (keyup)="onKeyUpSearch($event)" [(ngModel)]="sterm" class="form-control" type="text" placeholder="filter">
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+        <thead class="thead-dark"> 
+            <tr>
+                <th>Length</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Start</th>
+                <th>Finish</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let sprint of pastSprints">
+                <td>{{sprintTypes.findSprintByTime(sprint.duration)}}</td>
+                <td>{{sprint.status}}</td>
+                <td>{{sprint.createdAt.toLocaleString().slice(0,10)}}</td>
+                <td>{{sprint.startedAt.toLocaleString().slice(11,19)}}</td>
+                <td>{{sprint.finishedAt.toLocaleString().slice(11,19)}}</td>
+                <td>{{sprint.description}}</td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+    <div class="text-center"> 
+        <button (click)="onClickDeleteButton($event)" class="btn btn-danger">Delete All Data</button>
+    </div>
+</div>

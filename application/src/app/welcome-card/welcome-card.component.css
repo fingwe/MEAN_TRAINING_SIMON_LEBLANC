@@ -1,0 +1,14 @@
+h5 {
+    text-align: center;
+}
+
+.card {
+    margin-top: 10%;
+    width: 20rem;
+}
+
+.card_body_links {
+    color: black;
+    text-decoration: underline;
+    font-weight: 500;
+}

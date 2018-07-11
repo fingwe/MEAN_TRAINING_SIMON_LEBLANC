@@ -1,0 +1,17 @@
+select {
+    width: 75%;
+}
+
+.card-title {
+    text-align: center;
+}
+
+.card {
+    margin-top: 2rem;
+    align-self: center;
+    width: 25rem;
+}
+
+.btn {
+    margin-top: 1rem;
+}
