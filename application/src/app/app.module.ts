@@ -6,6 +6,8 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { HttpClientModule } from '@angular/common/http';
+import { ProgressbarModule } from 'ngx-bootstrap';
+import { PaginationModule } from 'ngx-bootstrap';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -18,6 +20,7 @@ import { TabviewComponent } from './tabview/tabview.component';
 import { PastSprintsComponent } from './past-sprints/past-sprints.component';
 import { NewSprintCardComponent } from './new-sprint-card/new-sprint-card.component';
 import { NewSprintWorkingComponent } from './new-sprint-working/new-sprint-working.component';
+import { FilterSprintPipe } from './filter-sprint.pipe';
 
 @NgModule({
   declarations: [
@@ -30,10 +33,13 @@ import { NewSprintWorkingComponent } from './new-sprint-working/new-sprint-worki
     TabviewComponent,
     PastSprintsComponent,
     NewSprintCardComponent,
-    NewSprintWorkingComponent
+    NewSprintWorkingComponent,
+    FilterSprintPipe
   ],
   imports: [
     BrowserModule,
+    PaginationModule.forRoot(),
+    ProgressbarModule.forRoot(),
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),

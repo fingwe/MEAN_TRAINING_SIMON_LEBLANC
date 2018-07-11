@@ -5,21 +5,21 @@
         <table class="table table-striped">
         <thead class="thead-dark"> 
             <tr>
-                <th>Length</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Start</th>
-                <th>Finish</th>
-                <th>Description</th>
+                <th (click)="onSelectLength($event)">Length</th>
+                <th (click)="onSelectStatus($event)">Status</th>
+                <th (click)="onSelectDate($event)">Date</th>
+                <th (click)="onSelectStart($event)">Start</th>
+                <th (click)="onSelectFinish($event)">Finish</th>
+                <th (click)="onSelectDescription($event)">Description</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let sprint of pastSprints">
+            <tr *ngFor="let sprint of pastSprints | filterSprint: sterm ">
                 <td>{{sprintTypes.findSprintByTime(sprint.duration)}}</td>
                 <td>{{sprint.status}}</td>
-                <td>{{sprint.createdAt.toLocaleString().slice(0,10)}}</td>
-                <td>{{sprint.startedAt.toLocaleString().slice(11,19)}}</td>
-                <td>{{sprint.finishedAt.toLocaleString().slice(11,19)}}</td>
+                <td>{{sprint.createdAt | date:'yyyy-MM-dd':'fr-Ca' }}</td>
+                <td>{{sprint.startedAt | date:'HH:mm:ss':'fr-Ca'}}</td>
+                <td>{{sprint.finishedAt | date:'HH:mm:ss':'fr-Ca'}}</td>
                 <td>{{sprint.description}}</td>
             </tr>
         </tbody>

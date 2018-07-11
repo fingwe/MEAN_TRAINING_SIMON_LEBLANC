@@ -111,45 +111,6 @@ function sprintRepository() {
         }).exec();
     }
 
-    function searchTimers(sterm, callback) {
-        initiatetDatabase();
-
-        let query = {};
-
-        if (sterm !== null) {
-
-            let date = Date.parse(sterm);
-
-            let formattedDate = new Date(date);
-
-            console.log(formattedDate);
-
-            if (!isNaN(date)) {
-                query = {$or:[
-                    {startedAt:{$gte: formattedDate}},
-                    {createdAt:{$gte: formattedDate}},
-                    {finishedAt:{$gte: formattedDate}}
-                ]}
-            } else {
-                query = {$or:[
-                    {name:{$regex: sterm, $options: 'i'}},
-                    {status:{$regex: sterm, $options: 'i'}},
-                    {description:{$regex: sterm, $options: 'i'}}
-                ]}
-            }
-
-            
-        }
-
-        PastSprint.find(query, (err, data ) => {
-            if (err) {
-                console.log(`pastSprintRepository.searchTimers error: ${err}`);
-            }
-            
-            callback(null,data);
-        });
-    }
-
     // procedure to start mongoose database connection
     function initiatetDatabase() {
         mongoose.connect(url);
@@ -168,8 +129,7 @@ function sprintRepository() {
             getTimer,
             updateTimer,
             deleteTimer,
-            deleteTimers,
-            searchTimers};
+            deleteTimers};
 }
 
 module.exports = sprintRepository;

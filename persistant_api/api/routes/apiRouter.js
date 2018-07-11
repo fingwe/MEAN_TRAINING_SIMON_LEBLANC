@@ -17,6 +17,4 @@ apiRouter.put('/pastsprints/:_id', putPastSprint);
 
 apiRouter.delete('/pastsprints/:_id', deletePastSprint);
 
-apiRouter.get('/pastsprints/search/:sterm', searchPastSprints);
-
 module.exports = apiRouter;

@@ -68,21 +68,13 @@ function pastSprintController() {
         });
     }
 
-    function searchPastSprints(req, res) {
-        console.log('searchPastSprints');
-        searchTimers(req.params.sterm,(err, data) => {
-            res.json(data);
-        });
-    }
-
     return {
         getPastSprints,
         setPastSprint,
         getPastSprint,
         putPastSprint,
         deletePastSprint,
-        deletePastSprints,
-        searchPastSprints
+        deletePastSprints
     };
 
 }

@@ -20,8 +20,6 @@ export class NewSprintWorkingComponent implements OnInit, OnChanges {
 
   modalRef: BsModalRef;
 
-  progresswidthStyle: any;
-
   progressPercent: number;
 
   interval: Interval;
@@ -49,7 +47,6 @@ export class NewSprintWorkingComponent implements OnInit, OnChanges {
         this.injectedSprint = chng.currentValue;
         this.absoluteSprintInit();
         this.runningSprintInit();
-        this.progresswidthStyle = {'width': `${this.progressPercent}%`};
         this.timerStart();
       }
     }
@@ -170,16 +167,15 @@ export class NewSprintWorkingComponent implements OnInit, OnChanges {
       if (this.runningSprint.progress < this.runningSprint.duration) {
         //
         this.progressPercent = (this.asbsoluteSprint.progress/this.asbsoluteSprint.duration)*100;
-        this.progresswidthStyle = {'width': `${this.progressPercent.toFixed(0)}%`};
         this.formatProgressPercent();
       } else {
         this.runningSprint.progress = this.runningSprint.duration;
+        this.asbsoluteSprint.progress = this.asbsoluteSprint.duration;
         this.progressPercent = 100;
-        this.progresswidthStyle = {'width': `${this.progressPercent.toFixed(0)}%`};
         this.timerEnd();
       }
       
-    },1);
+    },100);
   };
 
   /**
@@ -223,8 +219,10 @@ export class NewSprintWorkingComponent implements OnInit, OnChanges {
     this.interval.isFinished = true;
     this.saveSprint();
     this.onFinished();
-    this.sendInitRequest();
-    document.getElementById('past_sprint_tab-link').click();
+    setTimeout(()=>{
+      this.sendInitRequest();
+      document.getElementById('past_sprint_tab-link').click();
+    },2000);
 
   }
 
@@ -239,8 +237,10 @@ export class NewSprintWorkingComponent implements OnInit, OnChanges {
     this.asbsoluteSprint.status = new Status('Completed').getType();
     this.saveSprint();
     this.onFinished();
-    this.sendInitRequest();
-    document.getElementById('past_sprint_tab-link').click();
+    setTimeout(()=>{
+      this.sendInitRequest();
+      document.getElementById('past_sprint_tab-link').click();
+    },2000);
   }
 
 
