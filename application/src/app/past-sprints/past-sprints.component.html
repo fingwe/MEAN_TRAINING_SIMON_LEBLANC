@@ -24,8 +24,24 @@
             </tr>
         </tbody>
         </table>
-    </div>
+
+        <div class="selection">
+
+            <div class="btn-group">
+                <label class="btn btn-primary" (click)="setTop(5,$event)"
+                        btnCheckbox tabindex="0" role="button">5</label>
+                <label class="btn btn-primary" (click)="setTop(10,$event)"
+                        btnCheckbox tabindex="0" role="button">10</label>
+                <label class="btn btn-primary" (click)="setTop(15,$event)"
+                        btnCheckbox tabindex="0" role="button">15</label>
+                </div>
+            </div>
+
+            <pagination [totalItems]=relativeTotalItems *ngIf="showPageSelection" (pageChanged)="pageChanged($event)"></pagination>
+
+        </div>
+        
     <div class="text-center"> 
-        <button (click)="onClickDeleteButton($event)" class="btn btn-danger">Delete All Data</button>
+        <button (click)="onClickDeleteButton($event)" class="deleteButton btn btn-danger">Delete All Data</button>
     </div>
 </div>

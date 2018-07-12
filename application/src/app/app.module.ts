@@ -8,6 +8,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { HttpClientModule } from '@angular/common/http';
 import { ProgressbarModule } from 'ngx-bootstrap';
 import { PaginationModule } from 'ngx-bootstrap';
+import { ButtonsModule } from 'ngx-bootstrap';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -21,6 +22,7 @@ import { PastSprintsComponent } from './past-sprints/past-sprints.component';
 import { NewSprintCardComponent } from './new-sprint-card/new-sprint-card.component';
 import { NewSprintWorkingComponent } from './new-sprint-working/new-sprint-working.component';
 import { FilterSprintPipe } from './filter-sprint.pipe';
+import { SortSprintPipe } from './sort-sprint.pipe';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import { FilterSprintPipe } from './filter-sprint.pipe';
     PastSprintsComponent,
     NewSprintCardComponent,
     NewSprintWorkingComponent,
-    FilterSprintPipe
+    FilterSprintPipe,
+    SortSprintPipe
   ],
   imports: [
     BrowserModule,
@@ -44,6 +47,7 @@ import { FilterSprintPipe } from './filter-sprint.pipe';
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
     TabsModule.forRoot(),
+    ButtonsModule.forRoot(),
     FormsModule,
     AppRoutingModule,
     HttpClientModule

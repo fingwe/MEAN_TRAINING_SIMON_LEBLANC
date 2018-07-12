@@ -6,6 +6,67 @@ const mongoose = require('mongoose'),
 function sprintRepository() {
 
     const url = 'mongodb://localhost:27017/sprintApp';
+
+    function getTimersQuantity(callback) {
+        initiatetDatabase();
+
+        PastSprint.count({},(err,data) => {
+            if ( err ) {
+                callback(err,null);
+            }
+            callback(null,data);
+        });
+    }
+
+    function getPagedSortedTimers(query,callback) {
+        initiatetDatabase();
+        if (validateQuery(query)) {
+            let order;
+            if ( query.order === 'ascending') {
+                order = 1;
+            } else if ( query.order === 'descending' ) {
+                order = -1;
+            }
+            PastSprint.find({}).skip(parseInt(query.skip)).limit(parseInt(query.top)).sort([[query.field,order]]).exec((err, data) => {
+                if (err) {
+                    console.log(err);
+                }
+                callback(null,data);
+            });
+        } else {
+            return callback('error',null);
+        }
+        
+    }
+
+    /**
+     * fonction that validate the query string
+     * @param {the expressjs req.query object} query 
+     */
+    function validateQuery(query) {
+        if ( query !== null ) {
+            if ( query.field !== null && query.order !== null && query.skip !== null && query.top != null ) {
+                if ( (query.field === 'name' || 
+                 query.field === 'status' || 
+                 query.field === 'description' || 
+                 query.field === 'startedAt' || 
+                 query.field === 'createdAt' || 
+                 query.field === 'finishedAt') && 
+                 ( query.order === 'ascending' || 
+                   query.order === 'descending') && 
+                 ( !isNaN(parseInt(query.skip)) ) && 
+                 ( !isNaN(parseInt(query.top)))) {
+                     return true
+                 } else {
+                     return false;
+                 }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }      
+    }
     
     function getTimers(callback) {
         initiatetDatabase();
@@ -111,6 +172,46 @@ function sprintRepository() {
         }).exec();
     }
 
+    // function to return the timers sorted by field and ascending or descending
+    function sortTimers(query, callback) {
+        initiatetDatabase();
+
+        const field = query.field;
+
+        let order = 0;
+
+        if ( query !== null ) {
+            if ( (query.field === 'name' || 
+                  query.field === 'status' || 
+                  query.field === 'description' || 
+                  query.field === 'startedAt' || 
+                  query.field === 'createdAt' || 
+                  query.field === 'finishedAt') && 
+                  query.order !== null ) {
+
+                if ( query.order === 'ascending' ) {
+                    order = 1;
+                } else if ( query.order === 'descending') {
+                    order = -1;
+                } else {
+                    return callback('Invalid Parameter',null)
+                }
+                
+                PastSprint.find({}).sort([[field,order]]).exec((err, data) => {
+                    if ( err ) {
+                        console.log(`pastSprintRepository.sortTimers error: ${err}`);
+                    }
+        
+                    callback(null,data);
+                });
+            } else {
+               return callback('Invalid parameters',null)
+            }
+        } else {
+           return callback('Required parameters are missing',null);
+        }
+    }
+
     // procedure to start mongoose database connection
     function initiatetDatabase() {
         mongoose.connect(url);
@@ -122,14 +223,17 @@ function sprintRepository() {
         db.on('error', console.error.bind(console, 'MongoDB connection error'));
 
     }
-    
 
     return {getTimers,
             setTimer,
             getTimer,
             updateTimer,
             deleteTimer,
-            deleteTimers};
+            deleteTimers,
+            sortTimers,
+            getPagedSortedTimers,
+            getTimersQuantity
+        };
 }
 
 module.exports = sprintRepository;

@@ -36,11 +36,24 @@ export class SprintService {
     );
   }
 
-  searchSprints(sterm: String): Observable<PastSprint[]> {
-    return this.http.get<PastSprint[]>(`${this.sprintApiUrl}/search/${sterm}`)
-    .pipe(
-      tap(sprints => this.log(`searched sprints`)),
-      catchError(this.handleError('getSprints', []))
+  sortSprints(field: string, order: string) {
+    return this.http.get<PastSprint[]>(`${this.sprintApiUrl}/sort?field=${field}&order=${order}`).pipe(
+      tap((sprints => this.log(`sorted sprints by: ${field} and in ${order} order`)),
+      catchError(this.handleError('sortSprints', []))
+    ));
+  }
+
+  getPagedSortedSprints(field: string, order: string, top: number, skip: number) {
+    return this.http.get<PastSprint[]>(`${this.sprintApiUrl}/paged?field=${field}&order=${order}&skip=${skip}&top=${top}`).pipe(
+      tap((sprints => this.log(`sorted sprints by: ${field} and in ${order} order`)),
+      catchError(this.handleError('sortSprints', []))
+    ));
+  }
+
+  countSprints() {
+    return this.http.get<any>(`${this.sprintApiUrl}/count`).pipe(
+      tap((count => this.log(`fetched how many sprints there are: ${count}`))),
+      catchError(this.handleError('countSPrints'))
     );
   }
 
