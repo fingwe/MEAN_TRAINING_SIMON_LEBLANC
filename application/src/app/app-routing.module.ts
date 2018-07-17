@@ -6,6 +6,7 @@ import { HomeComponent } from '../app/home/home.component';
 import { NewSprintWorkingComponent } from '../app/new-sprint-working/new-sprint-working.component';
 
 
+
 const routes: Routes = [
   { path: 'sprints', component: SprintsComponent},
   { path: '', component: HomeComponent},

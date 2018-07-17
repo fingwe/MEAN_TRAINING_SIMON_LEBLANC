@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ProgressbarModule } from 'ngx-bootstrap';
 import { PaginationModule } from 'ngx-bootstrap';
 import { ButtonsModule } from 'ngx-bootstrap';
+import { OAuthModule } from 'angular-oauth2-oidc';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -41,6 +42,7 @@ import { SortSprintPipe } from './sort-sprint.pipe';
   ],
   imports: [
     BrowserModule,
+    OAuthModule.forRoot(),
     PaginationModule.forRoot(),
     ProgressbarModule.forRoot(),
     BsDropdownModule.forRoot(),
