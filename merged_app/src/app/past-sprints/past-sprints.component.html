@@ -1,0 +1,47 @@
+<div  class="container-fluid">
+    <input (keyup)="onKeyUpSearch($event)" [(ngModel)]="sterm" class="form-control" type="text" placeholder="filter">
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+        <thead class="thead-dark"> 
+            <tr>
+                <th (click)="onSelectLength($event)">Length</th>
+                <th (click)="onSelectStatus($event)">Status</th>
+                <th (click)="onSelectDate($event)">Date</th>
+                <th (click)="onSelectStart($event)">Start</th>
+                <th (click)="onSelectFinish($event)">Finish</th>
+                <th (click)="onSelectDescription($event)">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let sprint of pastSprints | filterSprint: sterm ">
+                <td>{{sprintTypes.findSprintByTime(sprint.duration)}}</td>
+                <td>{{sprint.status}}</td>
+                <td>{{sprint.createdAt | date:'yyyy-MM-dd':'fr-Ca' }}</td>
+                <td>{{sprint.startedAt | date:'HH:mm:ss':'fr-Ca'}}</td>
+                <td>{{sprint.finishedAt | date:'HH:mm:ss':'fr-Ca'}}</td>
+                <td>{{sprint.description}}</td>
+            </tr>
+        </tbody>
+        </table>
+
+        <div class="selection">
+
+            <div class="btn-group">
+                <label class="btn btn-primary" (click)="setTop(5,$event)"
+                        btnCheckbox tabindex="0" role="button">5</label>
+                <label class="btn btn-primary" (click)="setTop(10,$event)"
+                        btnCheckbox tabindex="0" role="button">10</label>
+                <label class="btn btn-primary" (click)="setTop(15,$event)"
+                        btnCheckbox tabindex="0" role="button">15</label>
+                </div>
+            </div>
+
+            <pagination [totalItems]=relativeTotalItems *ngIf="showPageSelection" (pageChanged)="pageChanged($event)"></pagination>
+
+        </div>
+        
+    <div class="text-center"> 
+        <button (click)="onClickDeleteButton($event)" class="deleteButton btn btn-danger">Delete All Data</button>
+    </div>
+</div>

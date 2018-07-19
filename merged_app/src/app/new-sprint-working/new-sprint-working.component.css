@@ -1,0 +1,32 @@
+h2 {
+    text-align: center;
+    margin-bottom: 2vw;
+}
+
+h4 {
+    text-align: center;
+}
+
+p {
+    text-align: center;
+    margin-top: 2vw;
+}
+
+#progress-bar {
+    color: black;
+}
+
+#stopBtn {
+    margin-top: 2vw;
+}
+
+.btn {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    width: 33%;
+}
+
+.container {
+    margin-top: 5vw;
+    width: 25vw;
+}

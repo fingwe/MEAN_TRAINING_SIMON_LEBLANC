@@ -1,0 +1,27 @@
+<div *ngIf="!timerIsRequested">
+    <div class="card mx-auto card_magin shadow p-3 mb-5 bg-white rounded">
+        <div class="card-body">
+          <h5 class="card-title">{{title}}</h5>
+          <form>
+            <div class="form-group">
+              <label for="length">Choose length *</label>
+              <select (change)="setSelectedValue($event)" [(ngModel)]="selectedSprintType" [ngModelOptions]="{standalone: true}" id="length" class="form-control" required>
+                  <option *ngFor="let type of sprintTypes" [ngValue]="type">{{type.name}}({{type.durationReadable}})</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="description">Description *</label>
+              <textarea (keyup)="checkDescriptionText($event)" [(ngModel)]="description" [ngModelOptions]="{standalone: true}" class="form-control" id="description" placeholder="What will you be doing?"></textarea>
+            </div>
+            <div class="form-check">
+                <input [(ngModel)]="sprint.notify" [ngModelOptions]="{standalone: true}" class="form-check-input" type="checkbox" value="" id="defaultCheck1" disabled>
+                <label class="form-check-label" for="defaultCheck1">
+                  Notify when completed
+                </label>
+              </div>
+          </form>
+          <button (click)="onClickStart($event)" class="btn btn-primary btn-block" type="submit" [disabled]="notReady">Start</button>
+        </div>
+      </div>
+</div>
+<app-new-sprint-working *ngIf="timerIsRequested" [injectedSprint]="sprint" (initRequestEvent)="initRequest($event)"></app-new-sprint-working>
