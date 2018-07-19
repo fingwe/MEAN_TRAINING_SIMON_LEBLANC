@@ -18,6 +18,7 @@
     "morgan": "~1.9.0",
     "nodemon": "^1.17.5",
     "openid-client": "^2.2.1",
-    "openid-connect": "^1.2.4"
+    "openid-connect": "^1.2.4",
+    "swagger": "^0.7.5"
   }
 }
