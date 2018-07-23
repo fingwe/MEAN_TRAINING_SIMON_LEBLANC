@@ -24,6 +24,9 @@ import { NewSprintCardComponent } from './new-sprint-card/new-sprint-card.compon
 import { NewSprintWorkingComponent } from './new-sprint-working/new-sprint-working.component';
 import { FilterSprintPipe } from './filter-sprint.pipe';
 import { SortSprintPipe } from './sort-sprint.pipe';
+import { AuthGuardService } from './auth-guard.service';
+import { AuthService } from './auth.service';
+import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,8 @@ import { SortSprintPipe } from './sort-sprint.pipe';
     NewSprintCardComponent,
     NewSprintWorkingComponent,
     FilterSprintPipe,
-    SortSprintPipe
+    SortSprintPipe,
+    AuthCallbackComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +58,7 @@ import { SortSprintPipe } from './sort-sprint.pipe';
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [AuthGuardService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

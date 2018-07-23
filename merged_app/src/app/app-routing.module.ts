@@ -4,13 +4,27 @@ import { Routes, RouterModule } from '@angular/router';
 import { SprintsComponent } from '../app/sprints/sprints.component';
 import { HomeComponent } from '../app/home/home.component';
 import { NewSprintWorkingComponent } from '../app/new-sprint-working/new-sprint-working.component';
+import { AuthGuardService } from './auth-guard.service';
+import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
 
 
 const routes: Routes = [
-  { path: 'sprints', component: SprintsComponent},
   { path: '', component: HomeComponent},
+  {
+    path: 'auth-callback',
+    component: AuthCallbackComponent
+  },
   { path: 'home', component: HomeComponent},
-  { path: 'running', component: NewSprintWorkingComponent},
+  { 
+    path: 'sprints', 
+    component: SprintsComponent,
+    canActivate: [AuthGuardService],
+  },
+  { 
+    path: 'running', 
+    component: NewSprintWorkingComponent,
+    canActivate: [AuthGuardService],
+  },
 ];
 
 @NgModule({

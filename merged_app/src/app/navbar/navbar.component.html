@@ -5,15 +5,17 @@
     <div class="p-2 nav-item"><a href="#"><img src="../../assets/pictures/logo.svg" /></a></div>
   </div>
   <div class="d-flex nav-section justify-content-end" *ngIf="!isCollapsed">
-    <div class="p-2 "><a class="nav-item" href="/sprints">Sprints</a></div>
-    <div class="p-2 "><a class="nav-item" href="/sprints">Login</a></div>
+    <div *ngIf="isLoggedIn" class="p-2 "><a class="nav-item" href="/sprints">Sprints</a></div>
+    <div *ngIf="!isLoggedIn" class="p-2 "><a class="nav-item" href="/sprints">Login</a></div>
+    <div (click)="logout($event)" *ngIf="isLoggedIn" class="p-2 "><a class="nav-item" href="/home">Logout</a></div>
   </div>
 
   <!-- collapsed side nav-->
   <div id="sidenav" class="sidenav" [ngStyle]="{'width.px': sideNavWidth}">
       <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
-      <a href="#">Sprints</a>
-      <a href="#">Login</a>
+      <div *ngIf="isLoggedIn"><a href="/sprints">Sprints</a></div>
+      <div *ngIf="!isLoggedIn"><a  href="/sprints">Login</a></div>
+      <div (click)="logout($event)" *ngIf="isLoggedIn"><a  href="/home">Logout</a></div>
   </div>
   <div class="d-flex nav-section justify-content-start" *ngIf="isCollapsed">
       <button (click)="openNav()" class="navbar-toggler" type="button" aria-label="Toggle navigation">

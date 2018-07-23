@@ -4,6 +4,7 @@ import { SprintService } from '../sprint.service';
 import { SprintTypeData } from '../data/SprintTypeData';
 import { Sort } from '../../models/Sort';
 import { CheckBox } from '../../models/checkbox';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-past-sprints',
@@ -38,6 +39,8 @@ export class PastSprintsComponent implements OnInit {
 
   order: string;
 
+  profile: any;
+
   pageManager(): void {
     if (this.totalItems > this.top ) {
       this.showPageSelection = true;
@@ -63,7 +66,7 @@ export class PastSprintsComponent implements OnInit {
 
   // get the sprint count from the service
   updateSprints(field?: string, order?: string, top?: number, skip?: number): void {
-    this.sprintService.countSprints().subscribe(count => {
+    this.sprintService.countSprints(this.authService.getClaims()).subscribe(count => {
       this.totalItems = count
       this.pageManager();
       this.getPagedSortedSprints(field || this.selectedField ,this.order || this.order, top || this.top,skip || this.skip);
@@ -72,17 +75,17 @@ export class PastSprintsComponent implements OnInit {
 
   // get all the sprints from the service
   getSprints(): void {
-    this.sprintService.getSprints().subscribe(sprints => this.pastSprints = sprints);
+    this.sprintService.getSprints(this.authService.getClaims()).subscribe(sprints => this.pastSprints = sprints);
   }
 
   // get the paged sprints from the service
   getPagedSortedSprints(field: string, order: string, top?: number, skip?: number): void {
-    this.sprintService.getPagedSortedSprints(field,this.order,top || this.top,skip || this.skip).subscribe(sprints => this.pastSprints = sprints);
+    this.sprintService.getPagedSortedSprints(field,this.order,top || this.top,skip || this.skip, this.authService.getClaims()).subscribe(sprints => this.pastSprints = sprints);
   }
 
   // delete all sprints command
   deleteSprints(): void {
-    this.sprintService.deleteSprints().subscribe(()=>{
+    this.sprintService.deleteSprints(this.authService.getClaims()).subscribe(()=>{
       this.getSprints();
     });
   }
@@ -176,7 +179,7 @@ export class PastSprintsComponent implements OnInit {
     this.getPagedSortedSprints(this.selectedField,this.order);
   }
 
-  constructor(private sprintService: SprintService) {
+  constructor(private sprintService: SprintService, private authService: AuthService) {
     this.sprintTypes = new SprintTypeData();
     this.sterm = "";
     this.sort = new Sort();
@@ -195,6 +198,9 @@ export class PastSprintsComponent implements OnInit {
       if (this.pastSprintSelected) {
         this.updateSprints();
         this.pastSprintSelected = false;
+      }
+      if ( this.profile == null) {
+        this.profile = JSON.stringify(this.authService.getClaims());
       }
     },25);
   }
