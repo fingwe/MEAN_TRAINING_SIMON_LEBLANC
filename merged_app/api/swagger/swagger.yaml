@@ -1,0 +1,147 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Sprint App
+# during dev, should point to your local machine
+host: localhost:3000
+# basePath prefixes all resource paths 
+basePath: /api
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /pastsprints:
+    # our controller name
+    x-swagger-router-controller: pastSprintController
+    get:
+      description: get all sprints
+      # define the type of response for Success "200" and Error
+      operationId: getPastSprints
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GetPastSprintListResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      description: add a sprint to the database
+      parameters:
+        - name: name 
+        
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/PastSprint"
+        responses:
+          "304":
+            description: Succes
+            schema: "#/definitions/GeneralResponse"
+          default:
+            description: Error
+            schema:
+              $ref: "#/definitions/ErrorResponse"
+          
+  /swagger:
+    x-swagger-pipe: swagger_raw
+# complex objects have schema definitions
+definitions:
+
+  PastSprint:
+    type: object
+    properties:
+      name:
+        type: string
+      duration:
+        type: number
+      status:
+        type: string
+      progress:
+        type: number
+      description:
+        type: string
+      notify:
+        type: boolean
+      user:
+        type: number
+      createdAt:
+        type: string
+      startedAt:
+        type: string
+      finishedAt:
+        type: string
+      required:
+        - name
+        - duration
+        - status
+        - progress
+        - description
+        - progress
+        - notify
+        - user
+        - createdAt
+        - startedAt
+        - finishedAt
+
+  GetPastSprintListResponse:
+    required:
+     - pastSprints
+    properties:
+      pastSprints:
+        type: array
+        items:
+          type: object
+          properties:
+            _id:
+              type: string
+            name:
+              type: string
+            duration:
+              type: number
+            status:
+              type: string
+            progress:
+              type: number
+            description:
+              type: string
+            notify:
+              type: boolean
+            user:
+              type: number
+            createdAt:
+              type: string
+            startedAt:
+              type: string
+            finishedAt:
+              type: string
+            __v:
+              type: number
+
+  GeneralResponse:
+    type: object
+    proterties:
+      success:
+        type: number
+        description: return 1 if successful
+      description:
+        type: string
+        description: a short comment
+      required:
+        - success
+        - description
+        
+  
+  ErrorResponse:
+    properties:
+      message:
+        type: string

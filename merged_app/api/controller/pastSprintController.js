@@ -11,7 +11,7 @@ function pastSprintController() {
             if (err) {
                 console.log(err.stack);
             } else {
-                console.log('sprintController.getSprints ok');
+                console.log(`sprintController.getSprints ok ${new Date()}`);
                 res.json(data.sprints);
             }
         });
@@ -24,7 +24,7 @@ function pastSprintController() {
             if (err) {
                 console.log(err.stack);
             } else {
-                console.log('psatSprintController.setSprint ok');
+                console.log(`pastSprintController.setSprint ok ${new Date()}`);
                 res.redirect('/api/pastsprints');
             }
         });
