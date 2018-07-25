@@ -1,4 +1,6 @@
 import { Component, OnInit, HostListener, Host } from '@angular/core';
+import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -13,6 +15,8 @@ export class NavbarComponent implements OnInit {
 
   sideNavWidth: number;
 
+  isLoggedIn: boolean;
+
   @HostListener('window:resize', ['$event'])
     onResize(event?) {
       this.windowWidth = window.innerWidth;
@@ -26,7 +30,13 @@ export class NavbarComponent implements OnInit {
     this.sideNavWidth = 250;
   }
 
-  constructor() {
+  logout($event) {
+    this.authService.logout();
+    this.router.navigate(['/home']);
+  }
+
+  constructor(private authService: AuthService, private router: Router) 
+  {
     this.sideNavWidth = 0;
     this.onResize();
   }
@@ -39,7 +49,9 @@ export class NavbarComponent implements OnInit {
       } else {
         this.isCollapsed = false;
       }
-    },100);
+
+      this.isLoggedIn = this.authService.isLoggedIn();
+    },1);
   }
 
 }

@@ -7,10 +7,10 @@ function sprintRepository() {
 
     const url = 'mongodb://localhost:27017/sprintApp';
 
-    function getTimersQuantity(callback) {
+    function getTimersQuantity(user, callback) {
         initiatetDatabase();
 
-        PastSprint.count({},(err,data) => {
+        PastSprint.count({ user: user },(err,data) => {
             if ( err ) {
                 callback(err,null);
             }
@@ -18,8 +18,9 @@ function sprintRepository() {
         });
     }
 
-    function getPagedSortedTimers(query,callback) {
+    function getPagedSortedTimers(request,callback) {
         initiatetDatabase();
+        const query = request.query;
         if (validateQuery(query)) {
             let order;
             if ( query.order === 'ascending') {
@@ -27,7 +28,7 @@ function sprintRepository() {
             } else if ( query.order === 'descending' ) {
                 order = -1;
             }
-            PastSprint.find({}).skip(parseInt(query.skip)).limit(parseInt(query.top)).sort([[query.field,order]]).exec((err, data) => {
+            PastSprint.find({ user: request.params.user }).skip(parseInt(query.skip)).limit(parseInt(query.top)).sort([[query.field,order]]).exec((err, data) => {
                 if (err) {
                     console.log(err);
                 }
@@ -68,9 +69,9 @@ function sprintRepository() {
         }      
     }
     
-    function getTimers(callback) {
+    function getTimers(user, callback) {
         initiatetDatabase();
-        PastSprint.find({}, (err, sprints) => {
+        PastSprint.find({ user: user }, (err, sprints) => {
             if (err) {
                 console.log(`SprintRepository.getTimers error: ${err}`);
                 return callback(err);
@@ -160,10 +161,10 @@ function sprintRepository() {
         });
     }
 
-    function deleteTimers(callback) {
+    function deleteTimers(user, callback) {
         initiatetDatabase();
 
-        PastSprint.remove({},(err, data) => {
+        PastSprint.remove({ user: user },(err, data) => {
             if (err) {
                 console.log(`pastSprintRepository.deleteTimers error: ${err}`);
             }
@@ -173,9 +174,10 @@ function sprintRepository() {
     }
 
     // function to return the timers sorted by field and ascending or descending
-    function sortTimers(query, callback) {
+    function sortTimers(request, callback) {
         initiatetDatabase();
 
+        const query = request.query;
         const field = query.field;
 
         let order = 0;
@@ -197,7 +199,7 @@ function sprintRepository() {
                     return callback('Invalid Parameter',null)
                 }
                 
-                PastSprint.find({}).sort([[field,order]]).exec((err, data) => {
+                PastSprint.find({ user: request.params.user }).sort([[field,order]]).exec((err, data) => {
                     if ( err ) {
                         console.log(`pastSprintRepository.sortTimers error: ${err}`);
                     }

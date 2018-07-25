@@ -10,7 +10,7 @@ const PastSprintSchema = new Schema({
     progress    : { type : Number },
     description : { type : String },
     notify      : { type : Boolean },
-    user        : { type : Number },
+    user        : { type : String },
     createdAt   : { type : Date },
     startedAt   : { type : Date },
     finishedAt   : { type : Date },

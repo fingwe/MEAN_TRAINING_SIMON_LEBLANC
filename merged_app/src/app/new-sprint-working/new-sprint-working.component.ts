@@ -45,6 +45,7 @@ export class NewSprintWorkingComponent implements OnInit, OnChanges {
       let prev = JSON.stringify(chng.previousValue);
       if (propName === "injectedSprint") {
         this.injectedSprint = chng.currentValue;
+        console.log(this.injectedSprint);
         this.absoluteSprintInit();
         this.runningSprintInit();
         this.timerStart();
@@ -137,7 +138,7 @@ export class NewSprintWorkingComponent implements OnInit, OnChanges {
     this.asbsoluteSprint.progress = 0;
     this.asbsoluteSprint.description = this.injectedSprint.description || "default sprint";
     this.asbsoluteSprint.notify = false;
-    this.asbsoluteSprint.user = 555;
+    this.asbsoluteSprint.user = this.injectedSprint.user;
     this.asbsoluteSprint.createdAt = new Date();
 
     this.progressPercent = 0;

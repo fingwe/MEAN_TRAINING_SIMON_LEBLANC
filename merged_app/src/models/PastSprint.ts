@@ -10,7 +10,7 @@ export class PastSprint implements SprintTemplate {
     progress: number;
     description: string;
     notify: boolean;
-    user: number;
+    user: string;
     createdAt: Date;
     startedAt: Date;
     finishedAt: Date;

@@ -15,8 +15,8 @@ export class SprintService {
 
   private sprintApiUrl = "http://localhost:3000/api/pastsprints";
 
-  getSprints(): Observable<PastSprint[]>{
-    return this.http.get<PastSprint[]>(this.sprintApiUrl)
+  getSprints(user: string): Observable<PastSprint[]>{
+    return this.http.get<PastSprint[]>(this.sprintApiUrl + `/${user}`)
       .pipe(
         tap(sprints => this.log(`fetched sprints`)),
         catchError(this.handleError('getSprints', []))
@@ -30,28 +30,28 @@ export class SprintService {
     );
   }
 
-  deleteSprints() {
-    return this.http.delete<any>(this.sprintApiUrl, httpOptions).pipe(
+  deleteSprints(user: string) {
+    return this.http.delete<any>(this.sprintApiUrl + `/${user}`, httpOptions).pipe(
       catchError(this.handleError())
     );
   }
 
-  sortSprints(field: string, order: string) {
-    return this.http.get<PastSprint[]>(`${this.sprintApiUrl}/sort?field=${field}&order=${order}`).pipe(
+  sortSprints(user: string, field: string, order: string) {
+    return this.http.get<PastSprint[]>(`${this.sprintApiUrl}/sort/${user}?field=${field}&order=${order}`).pipe(
       tap((sprints => this.log(`sorted sprints by: ${field} and in ${order} order`)),
       catchError(this.handleError('sortSprints', []))
     ));
   }
 
-  getPagedSortedSprints(field: string, order: string, top: number, skip: number) {
-    return this.http.get<PastSprint[]>(`${this.sprintApiUrl}/paged?field=${field}&order=${order}&skip=${skip}&top=${top}`).pipe(
+  getPagedSortedSprints(field: string, order: string, top: number, skip: number, user: string) {
+    return this.http.get<PastSprint[]>(`${this.sprintApiUrl}/paged/${user}?field=${field}&order=${order}&skip=${skip}&top=${top}`).pipe(
       tap((sprints => this.log(`sorted sprints by: ${field} and in ${order} order`)),
       catchError(this.handleError('sortSprints', []))
     ));
   }
 
-  countSprints() {
-    return this.http.get<any>(`${this.sprintApiUrl}/count`).pipe(
+  countSprints(user: string) {
+    return this.http.get<any>(`${this.sprintApiUrl}/count/${user}`).pipe(
       tap((count => this.log(`fetched how many sprints there are: ${count}`))),
       catchError(this.handleError('countSPrints'))
     );

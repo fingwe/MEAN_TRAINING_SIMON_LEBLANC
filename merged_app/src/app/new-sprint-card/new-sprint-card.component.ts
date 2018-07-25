@@ -3,6 +3,7 @@ import { StatusData } from '../data/StatusData';
 import { SprintTypeData } from '../data/SprintTypeData';
 import { PastSprint } from '../../models/PastSprint';
 import { SprintType } from '../../models/SprintType';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-new-sprint-card',
@@ -31,6 +32,8 @@ export class NewSprintCardComponent implements OnInit {
 
   timerIsRequested: boolean;
 
+  currentUser: string;
+
   initRequest($event) {
     this.init();
   }
@@ -47,6 +50,7 @@ export class NewSprintCardComponent implements OnInit {
     this.notSelected = true;
     this.empty = true;
     this.notReady = true;
+    this.currentUser = this.authService.getUserTag();
   }
 
   onClickStart(event) {
@@ -54,6 +58,7 @@ export class NewSprintCardComponent implements OnInit {
     this.sprint.duration = this.selectedSprintType.duration;
     this.sprint.description = this.description;
     this.timerIsRequested = true;
+    this.sprint.user = this.currentUser;
   }
 
   /**
@@ -91,7 +96,7 @@ export class NewSprintCardComponent implements OnInit {
     }
   }
 
-  constructor() {
+  constructor(private authService: AuthService) {
     this.init();
   }
 

@@ -7,11 +7,11 @@ function pastSprintController() {
     function getPastSprints(req, res) {
         
         console.log('getSprints');
-        getTimers((err, data) => {
+        getTimers(req.params.user,(err, data) => {
             if (err) {
                 console.log(err.stack);
             } else {
-                console.log('sprintController.getSprints ok');
+                console.log(`sprintController.getSprints ok ${new Date()}`);
                 res.json(data.sprints);
             }
         });
@@ -24,8 +24,8 @@ function pastSprintController() {
             if (err) {
                 console.log(err.stack);
             } else {
-                console.log('psatSprintController.setSprint ok');
-                res.redirect('/api/pastsprints');
+                console.log(`pastSprintController.setSprint ok ${new Date()}`);
+                res.json(data);
             }
         });
     }
@@ -63,28 +63,28 @@ function pastSprintController() {
 
     function deletePastSprints(req, res) {
         console.log('deletePastSprints');
-        deleteTimers((err, data) => {
+        deleteTimers(req.params.user, (err, data) => {
             res.send("Delete Successful");
         });
     }
 
     function getSortedPastSprints(req, res) {
         console.log('getSortedPastSprints');
-        sortTimers(req.query,(err, data) => {
+        sortTimers(req,(err, data) => {
             res.json(data);
         })
     }
 
     function getPagedSortedPastSprints(req, res) {
         console.log('getPagedSortedPastSprints');
-        getPagedSortedTimers(req.query,(err, data) => {
+        getPagedSortedTimers(req, (err, data) => {
             res.json(data);
         });
     }
 
     function getPastSprintsNumber(req, res ) {
         console.log('getPastSprintsNumber');
-        getTimersQuantity((err, data) => {
+        getTimersQuantity(req.params.user, (err, data) => {
             console.log(data);
             res.json(data);
         });
