@@ -1,6 +1,15 @@
 <div class="navbar" >
+
+  <!-- Navbar brand -->
+  <div class="d-flex nav-section justify-content-start" *ngIf="isCollapsed">  
+      <span (click)="openNav()"><img id="brand" src="../../assets/pictures/tiger.png" /></span>
+  </div>
+
+  <div class="d-flex nav-section justify-content-start" *ngIf="!isCollapsed">
+      <span><img id="brand" src="../../assets/pictures/tiger.png" /></span>
+  </div>
+
   <!-- not collapsed nav-->
-  <div class="d-flex nav-section" *ngIf="!isCollapsed"></div>
   <div class="d-flex nav-section-center justify-content-center" *ngIf="!isCollapsed">
     <div class="p-2 nav-item"><a href="#"><img src="../../assets/pictures/logo.svg" /></a></div>
   </div>
@@ -16,10 +25,5 @@
       <div *ngIf="isLoggedIn"><a href="/sprints">Sprints</a></div>
       <div *ngIf="!isLoggedIn"><a  href="/sprints">Login</a></div>
       <div (click)="logout($event)" *ngIf="isLoggedIn"><a  href="/home">Logout</a></div>
-  </div>
-  <div class="d-flex nav-section justify-content-start" *ngIf="isCollapsed">
-      <button (click)="openNav()" class="navbar-toggler" type="button" aria-label="Toggle navigation">
-          <span><img src="../../assets/pictures/hamburger.svg" /></span>
-      </button>
   </div>
 </div>

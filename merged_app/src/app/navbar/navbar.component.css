@@ -1,7 +1,11 @@
+#brand {
+    width: 40px;
+    height: auto;
+}
+
 .navbar {
     background-color: #2e2eb8;
-    height: 7%;
-    min-height: 70px;
+    height: 70px;
 }
 
 .nav-section {
