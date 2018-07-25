@@ -15,8 +15,9 @@ export class AuthCallbackComponent implements OnInit {
     this.authService.completeAuthentication();
     setInterval(() => {
       if (this.authService.isLoggedIn()) {
+        
         this.router.navigate(['/sprints']);
-      }
+      } 
     },100);
   }
 
