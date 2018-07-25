@@ -36,15 +36,15 @@ export class SprintService {
     );
   }
 
-  sortSprints(field: string, order: string) {
-    return this.http.get<PastSprint[]>(`${this.sprintApiUrl}/sort?field=${field}&order=${order}`).pipe(
+  sortSprints(user: string, field: string, order: string) {
+    return this.http.get<PastSprint[]>(`${this.sprintApiUrl}/sort/${user}?field=${field}&order=${order}`).pipe(
       tap((sprints => this.log(`sorted sprints by: ${field} and in ${order} order`)),
       catchError(this.handleError('sortSprints', []))
     ));
   }
 
   getPagedSortedSprints(field: string, order: string, top: number, skip: number, user: string) {
-    return this.http.get<PastSprint[]>(`${this.sprintApiUrl}/${user}/paged?field=${field}&order=${order}&skip=${skip}&top=${top}`).pipe(
+    return this.http.get<PastSprint[]>(`${this.sprintApiUrl}/paged/${user}?field=${field}&order=${order}&skip=${skip}&top=${top}`).pipe(
       tap((sprints => this.log(`sorted sprints by: ${field} and in ${order} order`)),
       catchError(this.handleError('sortSprints', []))
     ));

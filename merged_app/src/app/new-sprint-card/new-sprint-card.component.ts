@@ -32,6 +32,8 @@ export class NewSprintCardComponent implements OnInit {
 
   timerIsRequested: boolean;
 
+  currentUser: string;
+
   initRequest($event) {
     this.init();
   }
@@ -48,6 +50,7 @@ export class NewSprintCardComponent implements OnInit {
     this.notSelected = true;
     this.empty = true;
     this.notReady = true;
+    this.currentUser = this.authService.getUserTag();
   }
 
   onClickStart(event) {
@@ -55,7 +58,7 @@ export class NewSprintCardComponent implements OnInit {
     this.sprint.duration = this.selectedSprintType.duration;
     this.sprint.description = this.description;
     this.timerIsRequested = true;
-    this.sprint.user = this.authService.getClaims();
+    this.sprint.user = this.currentUser;
   }
 
   /**

@@ -10,7 +10,6 @@ import { ProgressbarModule } from 'ngx-bootstrap';
 import { PaginationModule } from 'ngx-bootstrap';
 import { ButtonsModule } from 'ngx-bootstrap';
 import { CollapseModule } from 'ngx-bootstrap';
-
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { WelcomeCardComponent } from './welcome-card/welcome-card.component';
@@ -58,7 +57,10 @@ import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [AuthGuardService, AuthService],
+  providers: [
+    AuthGuardService, 
+    AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

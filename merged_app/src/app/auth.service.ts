@@ -8,13 +8,14 @@ export class AuthService {
 
   getClientSettings(): UserManagerSettings {
     return {
-      authority: 'https://mycgitraining.auth0.com/authorize',
+      authority: 'https://mycgitraining.auth0.com',
+      
       client_id: '60QsHOOCB5Wus2gUGKbyifjHjcQpc8rx',
       client_secret: 'tEfUSRCVfsH2Vph1RSvaxtL0e3vgn6D-Z5y81sDT2gAozz051hQ895hh8Fr1Chgo',
-      redirect_uri: 'http://localhost:4200/auth-callback',
-      post_logout_redirect_uri: 'http://localhost:4200',
+      redirect_uri: 'http://localhost:3000/auth-callback',
+      post_logout_redirect_uri: 'http://localhost:3000',
       response_type: 'token id_token',
-      scope: 'openid',
+      scope: 'openid email',
       filterProtocolClaims: true,
       loadUserInfo: true,
     }
@@ -23,6 +24,15 @@ export class AuthService {
   private manager = new UserManager(this.getClientSettings());
 
   private user: User;
+
+  private userEmail: string;
+
+  getUserTag(): string {
+
+    this.userEmail= this.user.profile['email'].toString();
+
+    return this.userEmail;
+  }
 
   /**
    * check if user is logged in
@@ -36,6 +46,10 @@ export class AuthService {
    */
   getClaims(): any {
     return this.user.profile;
+  }
+
+  getScope(): any {
+    return this.user.scopes;
   }
 
   /**
@@ -71,6 +85,7 @@ export class AuthService {
   }
 
   constructor() {
+    
     this.manager.removeUser().then(user => {
       this.user = null;
     });

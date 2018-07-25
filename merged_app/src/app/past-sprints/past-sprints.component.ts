@@ -41,6 +41,8 @@ export class PastSprintsComponent implements OnInit {
 
   profile: any;
 
+  currentUser: string;
+
   pageManager(): void {
     if (this.totalItems > this.top ) {
       this.showPageSelection = true;
@@ -66,7 +68,7 @@ export class PastSprintsComponent implements OnInit {
 
   // get the sprint count from the service
   updateSprints(field?: string, order?: string, top?: number, skip?: number): void {
-    this.sprintService.countSprints(this.authService.getClaims()).subscribe(count => {
+    this.sprintService.countSprints(this.currentUser).subscribe(count => {
       this.totalItems = count
       this.pageManager();
       this.getPagedSortedSprints(field || this.selectedField ,this.order || this.order, top || this.top,skip || this.skip);
@@ -75,17 +77,17 @@ export class PastSprintsComponent implements OnInit {
 
   // get all the sprints from the service
   getSprints(): void {
-    this.sprintService.getSprints(this.authService.getClaims()).subscribe(sprints => this.pastSprints = sprints);
+    this.sprintService.getSprints(this.currentUser).subscribe(sprints => this.pastSprints = sprints);
   }
 
   // get the paged sprints from the service
   getPagedSortedSprints(field: string, order: string, top?: number, skip?: number): void {
-    this.sprintService.getPagedSortedSprints(field,this.order,top || this.top,skip || this.skip, this.authService.getClaims()).subscribe(sprints => this.pastSprints = sprints);
+    this.sprintService.getPagedSortedSprints(field,this.order,top || this.top,skip || this.skip, this.currentUser).subscribe(sprints => this.pastSprints = sprints);
   }
 
   // delete all sprints command
   deleteSprints(): void {
-    this.sprintService.deleteSprints(this.authService.getClaims()).subscribe(()=>{
+    this.sprintService.deleteSprints(this.currentUser).subscribe(()=>{
       this.getSprints();
     });
   }
@@ -98,7 +100,6 @@ export class PastSprintsComponent implements OnInit {
   // manage the click event on selecting the length column
   onSelectLength($event) {
     if (this.sort.ascendingLength) {
-      console.log('i have been here')
       this.sort.ascendingLength = false
       this.order = 'descending';
     } else {
@@ -188,6 +189,7 @@ export class PastSprintsComponent implements OnInit {
     this.skip = 0;
     this.selectedField = 'createdAt';
     this.order = 'ascending';
+    this.currentUser = this.authService.getUserTag();
     
   }
 
@@ -200,8 +202,10 @@ export class PastSprintsComponent implements OnInit {
         this.pastSprintSelected = false;
       }
       if ( this.profile == null) {
-        this.profile = JSON.stringify(this.authService.getClaims());
+        this.profile = JSON.stringify(this.currentUser);
       }
+
+      this.currentUser = this.authService.getUserTag();
     },25);
   }
 

@@ -45,6 +45,7 @@ export class NewSprintWorkingComponent implements OnInit, OnChanges {
       let prev = JSON.stringify(chng.previousValue);
       if (propName === "injectedSprint") {
         this.injectedSprint = chng.currentValue;
+        console.log(this.injectedSprint);
         this.absoluteSprintInit();
         this.runningSprintInit();
         this.timerStart();
