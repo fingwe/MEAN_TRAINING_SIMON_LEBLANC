@@ -17,9 +17,9 @@ apiRouter.delete('/pastsprints/:user', deletePastSprints);
 
 //apiRouter.get('/pastsprints/:_id', getPastSprint);
 
-apiRouter.put('/pastsprints/:_id', putPastSprint);
+//apiRouter.put('/pastsprints/:_id', putPastSprint);
 
-apiRouter.delete('/pastsprints/:_id', deletePastSprint);
+//apiRouter.delete('/pastsprints/:_id', deletePastSprint);
 
 apiRouter.get('/pastsprints/count/:user', getPastSprintsNumber);
 

@@ -1,29 +1,210 @@
 swagger: "2.0"
 info:
-  version: "0.0.1"
-  title: Sprint App
-# during dev, should point to your local machine
-host: localhost:10010
-# basePath prefixes all resource paths 
-basePath: "/"
-# 
+  description: "This is the documentation for the sprintApp API."
+  version: "1.0.0"
+  title: "Swagger SprintApp"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "simon.leblanc@cgi.com"
+  license:
+    name: "MIT"
+    url: "https://opensource.org/licenses/MIT"
+host: "127.0.0.1:10010"
+basePath: "/api"
 schemes:
-  # tip: remove http to make production-grade
-  - http
+- "http"
 paths:
-  /pastSprints:
+  x-swagger-router-controller: pastSprintController
+  /pastsprints:
     post:
-      tags:
-      - "pastSprints"
-      summary: "Add a sprint to the database"
+      summary: "save a user sprint"
       description: ""
-      operationId: "pastSprints"
+      operationId: "saveSprint"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
       - in: "body"
-        name: "name"
+        name: "body"
+        description: "pastSprint object that need to be saved"
+        required: true
+        schema:
+          $ref: "#/definitions/pastSprint"
+      responses:
+        405:
+          description: "Invalid input"
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/pastSprint"
+              
+  /pastsprints/{user}:
+    get:
+      summary: "get all past sprints from a user"
+      description: ""
+      operationId: "getUserSprints"
+      produces:
+      - "application/json"
+      parameters:
+      - in : "path"
+        name: "user"
+        description: "The email of the user"
+        required: true
+        type: "string"
+      responses:
+        405:
+          description: "Invalid input parameter"
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/pastSprint"
+              
+    delete:
+      summary: "Deletes a pet"
+      description: ""
+      operationId: "deletePet"
+      produces:
+      - "application/html"
+      parameters:
+      - name: "user"
+        in: "path"
+        description: "user from which delete the sprints"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        404:
+          description: "can't find sprints"
         
-  
+  /pastsprints/paged/{user}:
+    get:
+      summary: "Sort sprints of a user by one of the column"
+      description: "get the sprints of a user sorted by the header column given"
+      operationId: "getPagedSortedPastSPrints"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "user"
+        in: "path"
+        description: "the email of the user"
+        required: true
+        type: "string"
+      - name: "columnHeader"
+        in: "query"
+        description: "name of the header column to sort by: name, status, description, createdAt, startedAt, finishedAt"
+        required: true
+        type: "string"
+      - name: "order"
+        in: "query"
+        description: "order of sorting: ascending or descending are accepted values"
+        required: true
+        type: "string"
+      - name: "skip"
+        in: "query"
+        description: "number of record to skip in the query"
+        required: true
+        type: "string"
+      - name: "top"
+        in: "query"
+        description: "number of record to return"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/pastSprint"
+        405:
+          description: "Invalid input parameter"
+          
+  /pastsprints/sort/{user}:
+    get:
+      summary: "Sort sprints of a user by one of the column"
+      description: "get the sorted sprints of a user by the column header"
+      operationId: "getSortedPastSprints"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "user"
+        in: "path"
+        description: "the email of the user"
+        required: true
+        type: "string"
+      - name: "columnHeader"
+        in: "query"
+        description: "name of the header column to sort by: name, status, description, createdAt, startedAt, finishedAt"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/pastSprint"
+        405:
+          description: "Invalid input parameter"
+          
+  /pastsprints/count/{user}:
+    get:
+      summary: "get how many sprints the user has saved"
+      description: ""
+      operationId: "countUserSprints"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "user"
+        in: "path"
+        description: "the email of the user"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "integer"
+            items:
+              $ref: "#/definitions/quantity"
+              
+definitions:
+  quantity:
+    type: "integer"
+    format: "int32"
+    
+  pastSprint:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      duration:
+        type: "integer"
+        format: "int32"
+      progress:
+        type: "integer"
+        format: "int32"
+      description:
+        type: "string"
+      status:
+        type: "string"
+      notify:
+        type: "boolean"
+      user:
+        type: "string"
+        format: "email"
+      createdAt:
+        type: "string"
+        format: "date-time"
+      startedAt:
+        type: "string"
+        format: "date-time"
+      finishedAt:
+        type: "string"
+        format: "date-time"
